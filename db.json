@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "recipient": "Kaic",
+      "sender": "Marcelo",
+      "money": 1500,
+      "description": "Valor do carro",
+      "id": 1
+    },
+    {
+      "recipient": "Pedro",
+      "sender": "Bianca",
+      "money": 750,
+      "description": "Condomínio",
+      "id": 2
+    }
+  ]
+}
