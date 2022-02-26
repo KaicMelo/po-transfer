@@ -1,17 +1,14 @@
 import { Items } from './../interfaces/items.interface';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   PoDynamicFormField,
   PoGaugeRanges,
   PoListViewAction,
-  PoNotification,
   PoNotificationService,
   PoStepperComponent,
 } from '@po-ui/ng-components';
-import { retryWhen } from 'rxjs';
+import { TransferService } from './transfer.service';
 
 @Component({
   selector: 'app-transfer',
@@ -39,9 +36,8 @@ export class TransferComponent implements OnInit {
   poGaugeDay: number = 0;
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
-    private poNotificationService: PoNotificationService
+    private poNotificationService: PoNotificationService,
+    private transferService: TransferService
   ) {}
 
   ngOnInit(): void {
@@ -113,6 +109,8 @@ export class TransferComponent implements OnInit {
 
     this.isHideLoading = false;
 
+    this.poNotificationService.success("Transferência salva com sucesso !!")
+
     setTimeout(() => {
       this.isHideLoading = true;
 
@@ -130,6 +128,8 @@ export class TransferComponent implements OnInit {
 
   cancel() {
     this.stepper.first();
+
+    this.poNotificationService.warning("Cancelamento realizado com sucesso !!")
   }
 
   getForm(form: NgForm) {
@@ -140,7 +140,7 @@ export class TransferComponent implements OnInit {
     if (this.poGaugeDay >= 100) {
       this.poNotificationService.error('Limite diario atingido');
       return;
-    }else if (this.poGaugeAll >= 100) {
+    } else if (this.poGaugeAll >= 100) {
       this.poNotificationService.error('Limite total atingido');
       return;
     }
@@ -152,7 +152,7 @@ export class TransferComponent implements OnInit {
       date: new Date().toISOString(),
     };
 
-    this.http.post('http://localhost:3000/items', this.raw).subscribe((r) => {
+    this.transferService.setItems(this.raw).subscribe((r) => {
       this.dynamicForm.reset();
 
       this.propertyData = true;
@@ -165,12 +165,8 @@ export class TransferComponent implements OnInit {
     });
   }
 
-  private onClick() {
-    alert('Clicked in menu item');
-  }
-
   updateLimit() {
-    this.http.get<[]>('http://localhost:3000/items').subscribe((res) => {
+    this.transferService.getItems().subscribe((res) => {
       this.poGaugeAll = 10 * res.length;
 
       let count = 0;
