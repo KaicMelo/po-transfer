@@ -1,3 +1,5 @@
+import { ReportModule } from './report/report.module';
+import { TransferModule } from './transfer/transfer.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -17,11 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     PoModule,
     RouterModule.forRoot([]),
-    PoTemplatesModule,
-    PoDynamicModule,
-    HttpClientModule,
-    PoStepperModule,
-    PoWidgetModule
+    TransferModule,
+    ReportModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
