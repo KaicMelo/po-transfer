@@ -4,12 +4,7 @@
   <po-menu [p-menus]="menus"></po-menu>
 
   <po-page-default p-title="Hello world">
-    <po-dynamic-form [p-fields]="[ 
-     { property: 'sender',label:'Remetente',placeholder:'Remetente' },
-     { property: 'recipient',label:'Destinatário' ,placeholder:'Destinatário' },
-     { property: 'money',label:'Valor', type:'currency', placeholder:'Valor' },
-     { property: 'description',label:'Descrição' },
-      ]">
+    <po-dynamic-form #dynamicForm [p-fields]="propertyForm">
 
     </po-dynamic-form>
   </po-page-default>

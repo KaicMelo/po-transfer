@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { PoMenuItem } from '@po-ui/ng-components';
+import { PoDynamicFormField, PoMenuItem } from '@po-ui/ng-components';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +13,11 @@ export class AppComponent {
     { label: 'Inicio', action: () => alert('Hello world') }
   ];
 
-  private onClick() {
-    alert('Clicked in menu item')
-  }
+  propertyForm: Array<PoDynamicFormField> = [
+    { property: 'sender', label: 'Remetente', placeholder: 'Remetente', required: true },
+    { property: 'recipient', label: 'Destinatário', placeholder: 'Destinatário', required: true },
+    { property: 'money', label: 'Valor', type: 'currency', placeholder: 'Valor', required: true },
+    { property: 'description', label: 'Descrição', required: true },
+  ]
 
 }
