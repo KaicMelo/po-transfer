@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 
 import { PoDynamicFormField, PoMenuItem } from '@po-ui/ng-components';
@@ -8,6 +9,10 @@ import { PoDynamicFormField, PoMenuItem } from '@po-ui/ng-components';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+
+  dynamicForm!: NgForm;
+  raw!: any;
+
   readonly menus: Array<PoMenuItem> = [
     { label: 'Inicio', action: () => alert('Hello world') },
   ];
@@ -46,6 +51,11 @@ export class AppComponent {
   ];
 
   save(){
-    alert('ok')
+    
+    this.raw = this.dynamicForm.form.getRawValue();
+  }
+
+  getForm(form: NgForm) {
+    this.dynamicForm = form;
   }
 }
