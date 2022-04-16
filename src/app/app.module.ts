@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { PoModule, PoDynamicModule, PoButtonModule } from '@po-ui/ng-components';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { RouterModule } from '@angular/router';
     PoModule,
     RouterModule.forRoot([]),
     PoDynamicModule,
-    PoButtonModule
+    PoButtonModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
