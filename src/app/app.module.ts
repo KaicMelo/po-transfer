@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { PoModule, PoDynamicModule } from '@po-ui/ng-components';
+import { PoModule, PoDynamicModule, PoButtonModule } from '@po-ui/ng-components';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -13,7 +13,8 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     PoModule,
     RouterModule.forRoot([]),
-    PoDynamicModule
+    PoDynamicModule,
+    PoButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
