@@ -15,6 +15,10 @@ export class AppComponent {
   raw!: any;
   API = environment.API;
 
+  propertyData: boolean = false;
+  propertyAccept: boolean = false;
+  propertyConcluded: boolean = false;
+
   constructor(private http: HttpClient) {}
   readonly menus: Array<PoMenuItem> = [
     { label: 'Inicio', action: () => alert('Hello world') },
@@ -66,5 +70,17 @@ export class AppComponent {
 
   getForm(form: NgForm) {
     this.dynamicForm = form;
+  }
+
+  poData(){
+    return this.propertyData;
+  }
+  
+  poAccept(){
+    return this.propertyAccept;
+  }
+
+  poConcluded(){
+    return this.propertyConcluded;
   }
 }
