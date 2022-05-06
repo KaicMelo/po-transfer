@@ -1,8 +1,8 @@
 import { environment } from './../environments/environment';
 import { NgForm } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { PoDynamicFormField, PoMenuItem } from '@po-ui/ng-components';
+import { PoDynamicFormField, PoMenuItem, PoListViewAction, PoStepperComponent } from '@po-ui/ng-components';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -15,13 +15,29 @@ export class AppComponent {
   raw!: any;
   API = environment.API;
 
-  propertyData: boolean = false;
-  propertyAccept: boolean = false;
-  propertyConcluded: boolean = false;
+  propertyData: boolean = true;
+  propertyAccept: boolean = true;
+  propertyConcluded: boolean = true;
 
   constructor(private http: HttpClient) {}
+  @ViewChild('stepper') stepper!: PoStepperComponent;
+
   readonly menus: Array<PoMenuItem> = [
     { label: 'Inicio', action: () => alert('Hello world') },
+  ];
+
+  readonly actions: Array<PoListViewAction> = [
+    {
+      label: 'Confirmar',
+      action: this.confirm.bind(this),
+      icon: 'po-icon-ok'
+    },
+    {
+      label: 'Cancelar',
+      action: this.cancel.bind(this),
+      type: 'danger',
+      icon: 'po-icon-close'
+    }
   ];
 
   propertyForm: Array<PoDynamicFormField> = [
@@ -66,6 +82,10 @@ export class AppComponent {
     this.http.post(this.API, this.raw).subscribe(() => {
       alert('ok');
     });
+
+    this.stepper.next();
+
+    this.raw = [this.raw];
   }
 
   getForm(form: NgForm) {
@@ -82,5 +102,13 @@ export class AppComponent {
 
   poConcluded(){
     return this.propertyConcluded;
+  }
+  confirm(){
+    this.stepper.next();
+  }
+  cancel(){
+
+    this.dynamicForm.reset();
+    this.stepper.first();
   }
 }

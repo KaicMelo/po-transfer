@@ -19,13 +19,12 @@
 
       <po-step p-label="Confirmação" [p-can-active-next-step]="poAccept.bind(this)">
 
-        <po-list-view p-property-title="name" [p-items]="[
-    { name: 'Registro 1', email: 'register@po-ui.com' },
-    { name: 'Registro 2', email: 'register2@po-ui.com' }
-  ]">
+        <po-list-view p-property-title="name" [p-actions]="actions" [p-items]="raw">
           <ng-template p-list-view-content-template let-item>
             <div class="po-row">
-              <po-info class="po-md-12" p-label="Email" [p-value]="item.email"></po-info>
+              <po-info class="po-md-4" p-label="Destinatário" [p-value]="item.sender"></po-info>
+              <po-info class="po-md-4" p-label="Remetente" [p-value]="item.recipient"></po-info>
+              <po-info class="po-md-4" p-label="Valor" [p-value]="item.money"></po-info>
             </div>
           </ng-template>
         </po-list-view>
