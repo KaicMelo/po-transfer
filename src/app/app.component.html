@@ -32,7 +32,15 @@
       </po-step>
 
       <po-step p-label="Conluido" [p-can-active-next-step]="poConcluded.bind(this)">
-        <po-container>estamos em concluido</po-container>
+        <po-container>
+          <img class="po-page-blocked-user-image po-mt-5" src="https://www.pngall.com/wp-content/uploads/2016/07/Success-PNG-Image.png" alt="Confirmação">
+
+          <div class="po-row">
+
+            <p class="po-font-title po-text-center po-md-12 po-mb-2"> Transferencia</p>
+            <p class="po-font-text po-text-center po-md-12 po-mb-5">Concluida com sucesso</p>
+          </div>
+        </po-container>
         </po-step>
     </po-stepper>
   </po-page-default>
