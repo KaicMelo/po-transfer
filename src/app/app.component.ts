@@ -1,8 +1,8 @@
 import { environment } from './../environments/environment';
 import { NgForm } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { PoDynamicFormField, PoMenuItem } from '@po-ui/ng-components';
+import { PoDynamicFormField, PoMenuItem, PoListViewAction, PoStepperComponent } from '@po-ui/ng-components';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -11,17 +11,33 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  @ViewChild('stepper') stepper!: PoStepperComponent;
   dynamicForm!: NgForm;
   raw!: any;
   API = environment.API;
-
-  propertyData: boolean = false;
-  propertyAccept: boolean = false;
-  propertyConcluded: boolean = false;
+  transactionConfirm:any = [];
+  
+  propertyData: boolean = true;
+  propertyAccept: boolean = true;
+  propertyConcluded: boolean = true;
 
   constructor(private http: HttpClient) {}
   readonly menus: Array<PoMenuItem> = [
     { label: 'Inicio', action: () => alert('Hello world') },
+  ];
+
+  readonly actions: Array<PoListViewAction> = [
+    {
+      label: 'Confirmar',
+      action: this.confirm.bind(this),
+      icon: 'po-icon-ok'
+    },
+    {
+      label: 'Cancelar',
+      action: this.cancel.bind(this),
+      type: 'danger',
+      icon: 'po-icon-close'
+    }
   ];
 
   propertyForm: Array<PoDynamicFormField> = [
@@ -63,8 +79,10 @@ export class AppComponent {
       ...this.raw,
       date: new Date().toISOString(),
     };
-    this.http.post(this.API, this.raw).subscribe(() => {
-      alert('ok');
+    this.http.post(this.API, this.raw).subscribe((response) => {
+      this.transactionConfirm.push(response);
+      this.dynamicForm.reset();
+      this.stepper.next();
     });
   }
 
@@ -82,5 +100,14 @@ export class AppComponent {
 
   poConcluded(){
     return this.propertyConcluded;
+  }
+
+  confirm(){
+    this.stepper.next();
+    this.dynamicForm.reset();
+  }
+
+  cancel(){
+    this.stepper.first();
   }
 }
