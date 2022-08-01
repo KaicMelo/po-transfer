@@ -2,7 +2,12 @@ import { environment } from './../environments/environment';
 import { NgForm } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
 
-import { PoDynamicFormField, PoMenuItem, PoListViewAction, PoStepperComponent } from '@po-ui/ng-components';
+import {
+  PoDynamicFormField,
+  PoMenuItem,
+  PoListViewAction,
+  PoStepperComponent,
+} from '@po-ui/ng-components';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -15,11 +20,13 @@ export class AppComponent {
   dynamicForm!: NgForm;
   raw!: any;
   API = environment.API;
-  transactionConfirm:any = [];
-  
+  transactionConfirm: any = [];
+
   propertyData: boolean = false;
   propertyAccept: boolean = false;
   propertyConcluded: boolean = false;
+
+  isHideLoading: boolean = true;
 
   constructor(private http: HttpClient) {}
   readonly menus: Array<PoMenuItem> = [
@@ -30,14 +37,14 @@ export class AppComponent {
     {
       label: 'Confirmar',
       action: this.confirm.bind(this),
-      icon: 'po-icon-ok'
+      icon: 'po-icon-ok',
     },
     {
       label: 'Cancelar',
       action: this.cancel.bind(this),
       type: 'danger',
-      icon: 'po-icon-close'
-    }
+      icon: 'po-icon-close',
+    },
   ];
 
   propertyForm: Array<PoDynamicFormField> = [
@@ -75,18 +82,22 @@ export class AppComponent {
 
   save() {
     this.transactionConfirm = [];
-    
+
     this.raw = this.dynamicForm.form.getRawValue();
     this.raw = {
       ...this.raw,
       date: new Date().toISOString(),
     };
+
+    this.isHideLoading = false;
+
     this.http.post(this.API, this.raw).subscribe((response) => {
       this.propertyData = true;
       this.transactionConfirm.push(response);
       this.dynamicForm.reset();
       this.stepper.next();
       this.propertyData = false;
+      this.isHideLoading = true;
     });
   }
 
@@ -94,26 +105,32 @@ export class AppComponent {
     this.dynamicForm = form;
   }
 
-  poData(){
+  poData() {
     return this.propertyData;
   }
-  
-  poAccept(){
+
+  poAccept() {
     return this.propertyAccept;
   }
 
-  poConcluded(){
+  poConcluded() {
     return this.propertyConcluded;
   }
 
-  confirm(){
-    this.propertyAccept = true;
-    this.stepper.next();
-    this.propertyAccept = false;
-    this.dynamicForm.reset();
+  confirm() {
+    this.isHideLoading = false;
+
+    setTimeout(() => {
+      this.propertyAccept = true;
+      this.stepper.next();
+      this.propertyAccept = false;
+      this.dynamicForm.reset();
+
+      this.isHideLoading = true;
+    }, 2000);
   }
 
-  cancel(){
+  cancel() {
     this.stepper.first();
   }
 }
