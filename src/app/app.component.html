@@ -51,7 +51,14 @@
     </po-widget>
 
     <po-widget class="po-md-4">
-      Aqui entra nosso Grafico
+      <po-gauge p-title="Limite de transferência" [p-value]="poGaugeAll"></po-gauge>
+
+      <po-gauge
+      p-title="Limite diário"
+      [p-value]="poGaugeDay"
+      [p-ranges]="turnoverRanges"
+    ></po-gauge>
+
     </po-widget>
 
   </po-page-default>
