@@ -1,6 +1,4 @@
-<po-loading-overlay
-    [hidden]="isHideLoading"
-    p-text="Carregando" >
+<po-loading-overlay [hidden]="isHideLoading" p-text="Carregando">
 </po-loading-overlay>
 
 <div class="po-wrapper">
@@ -9,44 +7,52 @@
   <po-menu [p-menus]="menus"></po-menu>
 
   <po-page-default p-title="Hello world">
+    <po-widget class="po-md-8">
+      <po-stepper #stepper [p-step-icons]="true">
+        <po-step p-label="Transfêrencia" [p-can-active-next-step]="poData.bind(this)">
 
-    <po-stepper #stepper [p-step-icons]="true">
-      <po-step p-label="Transfêrencia" [p-can-active-next-step]="poData.bind(this)">
+          <po-dynamic-form #dynamicForm (p-form)="getForm($event)" [p-fields]="propertyForm">
 
-        <po-dynamic-form #dynamicForm (p-form)="getForm($event)" [p-fields]="propertyForm">
+          </po-dynamic-form>
+          <po-button [p-disabled]="dynamicForm.form.invalid || false" p-label="Salvar" class="po-md-3"
+            (p-click)="save()">
 
-        </po-dynamic-form>
-        <po-button [p-disabled]="dynamicForm.form.invalid || false" p-label="Salvar" class="po-md-3" (p-click)="save()">
+          </po-button>
 
-        </po-button>
-
-      </po-step>
-
-      <po-step p-label="Confirmação" [p-can-active-next-step]="poAccept.bind(this)">
-
-        <po-list-view p-property-title="name" [p-actions]="actions" [p-items]="transactionConfirm">
-          <ng-template p-list-view-content-template let-item>
-            <div class="po-row">
-              <po-info class="po-md-4" p-label="Remetente" [p-value]="item.sender"></po-info>
-              <po-info class="po-md-4" p-label="Destinatário" [p-value]="item.recipient"></po-info>
-              <po-info class="po-md-4" p-label="valor" [p-value]="item.money"></po-info>
-            </div>
-          </ng-template>
-        </po-list-view>
-
-      </po-step>
-
-      <po-step p-label="Concluido" [p-can-active-next-step]="poConcluded.bind(this)">
-        <po-container>
-          <img class="po-page-blocked-user-image po-mt-5" src="https://www.pngall.com/wp-content/uploads/2016/07/Success-PNG-Image.png" alt="Confirmação">
-
-          <div class="po-row">
-
-            <p class="po-font-title po-text-center po-md-12 po-mb-2"> Transfêrencia</p>
-            <p class="po-font-text po-text-center po-md-12 po-mb-5">Concluida com sucesso</p>
-          </div>
-        </po-container>
         </po-step>
-    </po-stepper>
+
+        <po-step p-label="Confirmação" [p-can-active-next-step]="poAccept.bind(this)">
+
+          <po-list-view p-property-title="name" [p-actions]="actions" [p-items]="transactionConfirm">
+            <ng-template p-list-view-content-template let-item>
+              <div class="po-row">
+                <po-info class="po-md-4" p-label="Remetente" [p-value]="item.sender"></po-info>
+                <po-info class="po-md-4" p-label="Destinatário" [p-value]="item.recipient"></po-info>
+                <po-info class="po-md-4" p-label="valor" [p-value]="item.money"></po-info>
+              </div>
+            </ng-template>
+          </po-list-view>
+
+        </po-step>
+
+        <po-step p-label="Concluido" [p-can-active-next-step]="poConcluded.bind(this)">
+          <po-container>
+            <img class="po-page-blocked-user-image po-mt-5"
+              src="https://www.pngall.com/wp-content/uploads/2016/07/Success-PNG-Image.png" alt="Confirmação">
+
+            <div class="po-row">
+
+              <p class="po-font-title po-text-center po-md-12 po-mb-2"> Transfêrencia</p>
+              <p class="po-font-text po-text-center po-md-12 po-mb-5">Concluida com sucesso</p>
+            </div>
+          </po-container>
+        </po-step>
+      </po-stepper>
+    </po-widget>
+
+    <po-widget class="po-md-4">
+      Aqui entra nosso Grafico
+    </po-widget>
+
   </po-page-default>
 </div>
