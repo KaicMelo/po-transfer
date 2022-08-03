@@ -1,6 +1,6 @@
 import { environment } from './../environments/environment';
 import { NgForm } from '@angular/forms';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import {
   PoDynamicFormField,
@@ -16,7 +16,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   @ViewChild('stepper') stepper!: PoStepperComponent;
   dynamicForm!: NgForm;
   raw!: any;
@@ -33,6 +33,10 @@ export class AppComponent {
   poGaugeDay: number = 0;
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.updatePoGauge();
+  }
 
   turnoverRanges: Array<PoGaugeRanges> = [
     { from: 0, to: 50, label: 'Baixo', color: '#00b28e' },
@@ -92,6 +96,14 @@ export class AppComponent {
   ];
 
   save() {
+  
+    if(this.poGaugeDay >= 100 ) {
+      alert('Limite diário atingido')
+      return 
+    } else if (this.poGaugeAll >= 100) {
+      alert('Limite total atingido')
+      return
+    }
     this.transactionConfirm = [];
 
     this.raw = this.dynamicForm.form.getRawValue();
@@ -130,6 +142,7 @@ export class AppComponent {
 
   confirm() {
     this.isHideLoading = false;
+    this.updatePoGauge();
 
     setTimeout(() => {
       this.propertyAccept = true;
@@ -139,9 +152,32 @@ export class AppComponent {
 
       this.isHideLoading = true;
     }, 2000);
+
+    setTimeout( () => {
+      this.stepper.first();
+    },4000)
   }
 
   cancel() {
     this.stepper.first();
+  }
+
+  updatePoGauge(){
+    this.http.get(this.API).subscribe((items: any) => {
+      this.poGaugeAll = 10* items.length;
+
+      const today = new Date().toLocaleDateString();
+      let count = 0;
+
+      items.map((response: any) => {
+        const dateToCompare = new Date(response.date).toLocaleDateString();
+
+        if(today === dateToCompare) {
+          count ++;
+        }
+      })
+
+      this.poGaugeDay = 25 * count;
+    })
   }
 }
